@@ -565,3 +565,22 @@ We've built a comprehensive surveillance system with:
 **6. Error Handling:** Robust against recognition errors  
 
 ---
+
+## Implement Text-to-Speech Synthesis
+
+- Created VoiceSynthesizer class
+- Implemented pyttsx3 integration
+- Added speech rate control
+- Implemented voice selection
+- Added message queueing
+
+### Key Features
+
+**1. Speech Queue:** Processes messages in background thread  
+**2. Voice Customization:** Adjustable rate, volume, and voice  
+**3. Thread Safety:** Safe for concurrent access  
+**4. Error Handling:** Catches synthesis errors  
+
+Now let's implement the service layer components, starting with alert services.
+
+---
