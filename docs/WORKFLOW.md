@@ -50,6 +50,7 @@ DeepSentinel/                  # Project root
 │   │   │   ├── dashboard.py    # Threat dashboard
 │   │   │   └── main_window.py  # Main application window
 │   │   ├── voice/             # Voice interface
+│   │   │   ├── __init__.py
 │   │   │   ├── controller.py   # Voice command handler
 │   │   │   └── synthesizer.py  # Text-to-speech
 │   │   └── __init__.py
@@ -1185,5 +1186,13 @@ voice_controller.start_listening()
 - Created package-level imports for GUI components
 - Exposed MainApplication, ThreatDashboard, and ControlPanel
 - Added documentation for GUI structure
+
+---
+
+## Initialize Voice Interface Subpackage
+
+- Created package-level imports for voice components
+- Exposed VoiceController and VoiceSynthesizer
+- Added documentation for voice interface structure
 
 ---
