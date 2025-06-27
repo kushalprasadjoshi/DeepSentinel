@@ -56,6 +56,7 @@ DeepSentinel/                  # Project root
 │   │   └── __init__.py
 │   ├── services/              # External services
 │   │   ├── alerts/            # Notification services
+│   │   │   ├── __init__.py
 │   │   │   ├── email_alert.py  # Email notifications
 │   │   │   └── sms_alert.py    # SMS notifications
 │   │   ├── cloud/             # Cloud integration
@@ -1248,3 +1249,12 @@ sms_service.send_alert(threat_event, "Security alert!")
 ```
 
 ---
+
+## Initialize Alert Services Subpackage
+
+- Created package-level imports for alert services
+- Exposed EmailNotifier and SMSNotifier
+- Added documentation for alert services
+
+---
+
