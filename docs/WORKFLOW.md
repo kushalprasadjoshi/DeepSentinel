@@ -847,3 +847,80 @@ This configuration file provides a centralized way to manage all model-related s
 The file follows YOLOv8's configuration standards while adding security-specific parameters for threat detection.
 
 ---
+
+## Implement Face Recognition Module
+
+- Created FaceRecognizer class with recognition capabilities
+- Implemented known face loading and caching
+- Added face detection and encoding
+- Developed face matching with adjustable tolerance
+- Created methods to add new known faces
+- Added face database persistence
+- Integrated with the existing detection pipeline
+
+### Key Features:
+1. **Face Encoding**: Uses dlib's deep learning models
+2. **Known Face Database**: Stores face encodings with names
+3. **Cache System**: Saves encodings for faster loading
+4. **Recognition Pipeline**: 
+   - Face detection
+   - Encoding generation
+   - Similarity matching
+5. **Dynamic Enrollment**: Add new faces at runtime
+6. **Adjustable Tolerance**: Control recognition strictness
+7. **Multiple Models**: Supports both HOG (CPU) and CNN (GPU) methods
+
+### Usage Example:
+```python
+# Initialize face recognizer
+face_recognizer = FaceRecognizer()
+
+# Process frame
+frame = cv2.imread('person.jpg')
+recognized_faces = face_recognizer.recognize_faces(frame)
+
+for face in recognized_faces:
+    print(f"Found {face['name']} with confidence {1 - face['distance']:.2f}")
+    
+# Add new known face
+new_face_image = cv2.imread('new_person.jpg')
+face_recognizer.add_known_face(new_face_image, "John Doe")
+```
+
+### Integration with Threat Detection:
+```python
+# In the video pipeline
+recognized_faces = face_recognizer.recognize_faces(frame)
+
+for face in recognized_faces:
+    if face['name'] == 'Unknown':
+        # Trigger unknown person alert
+        threat_event = {
+            'type': 'unauthorized_person',
+            'confidence': 1 - face['distance'],
+            'location': face['location'],
+            'timestamp': time.time(),
+            'snapshot': frame
+        }
+        state_manager.add_threat_event(threat_event)
+```
+
+This implementation provides robust face recognition capabilities that integrate seamlessly with the existing threat detection system. The face database management allows for easy enrollment of authorized personnel while flagging unknown individuals.
+
+### Directory Structure for Known Faces:
+```
+data/processed/faces/
+├── employee1.jpg
+├── employee2.jpg
+├── manager.jpg
+└── face_encodings.pkl  # Auto-generated cache
+```
+
+### Performance Notes:
+- **HOG Model**: Faster on CPU (real-time on modern processors)
+- **CNN Model**: More accurate but requires GPU for real-time
+- **Cache**: First run will be slow while processing images, subsequent runs load cached encodings
+
+This completes the face recognition component, adding an important layer of personnel identification to the security system.
+
+---
