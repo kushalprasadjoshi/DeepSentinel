@@ -1,12 +1,43 @@
-# Python
+# Python artifacts
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*.egg-info/
+dist/
+build/
 
-# venv
+# Virtual environments
+.venv/
 venv/
+env/
+
+# Data files (large media)
+data/raw/**/*.mp4
+data/raw/**/*.avi
+data/raw/**/*.mov
+data/processed/**/*.jpg
+data/processed/**/*.png
+
+# Model files
+models/**/*.pt
+models/**/*.onnx
+models/**/*.pth
+
+# Logs and outputs
+*.log
+*.csv
+output/
+results/
 
 # IDE files
 .vscode/
 .idea/
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Exceptions (track metadata)
+!data/raw/metadata.csv
+!data/processed/dataset_stats.json
+!models/README.md
