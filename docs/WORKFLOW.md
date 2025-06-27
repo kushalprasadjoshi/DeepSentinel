@@ -1021,3 +1021,81 @@ This implementation significantly enhances the model's ability to handle real-wo
 **6. Error Handling:** Robust training process with logging  
 
 ---
+
+## Implement Model Validation and Reporting
+
+- Created ModelValidator class for comprehensive evaluation
+- Implemented validation metrics calculation
+- Added detailed report generation (precision, recall, mAP)
+- Created visualization of confusion matrix and curves
+- Added example detection plots
+- Implemented model comparison functionality
+- Generated mAP comparison charts
+
+### Key Features:
+
+1. **Comprehensive Metrics**:
+   - Precision, Recall
+   - mAP@0.5, mAP@0.5-0.95
+   - Per-class metrics
+2. **Visual Reports**:
+   - Confusion matrix
+   - Precision-Recall curves
+   - F1 curves
+   - ROC curves
+3. **Example Detections**: Shows model performance on sample images
+4. **Model Comparison**: Evaluates multiple models side-by-side
+5. **Automated Reporting**: Generates complete validation package
+
+### Usage Example:
+
+```python
+# Initialize trainer
+with open('config/model_config.yaml') as f:
+    config = yaml.safe_load(f)
+    
+trainer = ModelTrainer(config, 'data/processed', 'models/custom')
+
+# Train model
+metrics = trainer.train(epochs=100, batch_size=16)
+
+# Export model
+trainer.save_model(format='onnx')
+
+# Validate model
+validator = ModelValidator(config)
+validator.validate(trainer.model, 'data/processed/dataset.yaml')
+
+# Compare models
+comparison = validator.compare_models(
+    ['models/v1.pt', 'models/v2.pt'],
+    'data/processed/dataset.yaml'
+)
+```
+
+### Training Workflow:
+
+```mermaid
+graph TD
+    A[Load Configuration] --> B[Prepare Dataset]
+    B --> C[Initialize Model]
+    C --> D[Apply Transfer Learning]
+    D --> E[Train with Augmentation]
+    E --> F[Validate Model]
+    F --> G[Export Model]
+    G --> H[Generate Reports]
+```
+
+### Validation Metrics:
+
+| Metric | Description | Importance |
+|--------|-------------|------------|
+| **mAP@0.5** | Mean Average Precision at IoU=0.5 | Overall detection quality |
+| **mAP@0.5-0.95** | mAP across IoU thresholds 0.5-0.95 | Localization accuracy |
+| **Precision** | True positives / (True + False positives) | False alarm rate |
+| **Recall** | True positives / (True positives + False negatives) | Threat detection rate |
+| **F1 Score** | Harmonic mean of precision and recall | Balanced performance measure |
+
+This completes the training and validation components, providing a professional-grade pipeline for developing and evaluating threat detection models. The implementation follows best practices in computer vision training while addressing specific requirements for security surveillance systems.
+
+---
