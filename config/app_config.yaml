@@ -1,0 +1,46 @@
+# DeepSentinel Application Configuration
+
+# Camera Settings
+camera:
+  default_index: 0
+  resolution:
+    width: 1280
+    height: 720
+  fps: 30
+  rotation: 0  # Degrees to rotate image (0, 90, 180, 270)
+
+# Detection Settings
+detection:
+  confidence_threshold: 0.75
+  nms_threshold: 0.45
+  classes:  # Custom threat classes
+    - weapon
+    - fight
+    - loitering
+    - ppe_violation
+  motion:
+    sensitivity: 0.05  # 0-1 (lower = more sensitive)
+    min_area: 500  # Minimum contour area to trigger
+
+# System Performance
+performance:
+  max_threads: 4
+  gpu_acceleration: True
+  inference_size: 640  # Input size for model
+
+# UI Settings
+ui:
+  theme: dark
+  show_fps: True
+  show_detection_info: True
+  threat_colors:
+    weapon: [255, 0, 0]    # Red
+    fight: [255, 165, 0]    # Orange
+    loitering: [255, 255, 0] # Yellow
+    ppe_violation: [0, 0, 255] # Blue
+
+# Alert Preferences
+alerts:
+  default_channel: both  # email, sms, both
+  min_confidence: 0.85
+  cooldown: 30  # Seconds between alerts for same camera
