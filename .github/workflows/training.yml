@@ -1,0 +1,63 @@
+name: Model Training
+
+on:
+  schedule:
+    - cron: '0 0 * * SUN'  # Run every Sunday at midnight
+  workflow_dispatch:
+    inputs:
+      epochs:
+        description: 'Number of epochs'
+        required: true
+        default: '100'
+      batch_size:
+        description: 'Batch size'
+        required: true
+        default: '16'
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    container:
+      image: pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install boto3
+
+    - name: Download dataset
+      run: |
+        aws s3 sync s3://$S3_BUCKET/datasets/security data/processed/
+
+    - name: Train model
+      run: |
+        python train.py \
+          --epochs ${{ github.event.inputs.epochs || 100 }} \
+          --batch ${{ github.event.inputs.batch_size || 16 }} \
+          --output models/custom
+
+    - name: Upload trained model
+      run: |
+        aws s3 sync models/custom/ s3://$S3_BUCKET/models/latest/
+        aws s3 cp models/custom/model.pt s3://$S3_BUCKET/models/v$(date +%Y%m%d)/model.pt
+
+    - name: Save model artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: trained-model
+        path: models/custom
+        retention-days: 1

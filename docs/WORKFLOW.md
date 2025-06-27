@@ -726,3 +726,50 @@ The system architecture is now complete with:
 **6. Matrix Testing:** Ready for multiple Python versions  
 
 ---
+
+## Implement Scheduled Model Training Workflow
+
+- Created weekly model training pipeline
+- Added manual trigger with custom parameters
+- Implemented GPU-accelerated training environment
+- Added dataset download from S3
+- Created model versioning and artifact storage
+- Configured secure AWS credential handling
+
+### Key Features
+
+**1. Scheduled Training:** Runs weekly (Sunday midnight)  
+**2. Manual Triggers:** With customizable parameters  
+**3. GPU Support:** Uses PyTorch CUDA container  
+**4. Data Management:** Downloads from S3, uploads results  
+**5. Model Versioning:** Date-based version folders  
+**6. Artifact Storage:** Stores models as workflow artifacts  
+**7. Secret Management:** Secure AWS credentials handling  
+
+### Security Note
+
+Requires these secrets configured in GitHub:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `S3_BUCKET`
+- `CODECOV_TOKEN` (for test workflow)
+
+### Workflow Diagram
+
+```mermaid
+graph TD
+    A[Event: Push/Pull Request] --> B[Run Tests]
+    B --> C[Install Dependencies]
+    C --> D[Run Unit Tests]
+    D --> E[Check Code Style]
+    E --> F[Upload Coverage]
+    
+    G[Event: Schedule/Manual] --> H[Model Training]
+    H --> I[Setup GPU Environment]
+    I --> J[Download Dataset]
+    J --> K[Train Model]
+    K --> L[Upload Model]
+    L --> M[Save Artifact]
+```
+
+---
