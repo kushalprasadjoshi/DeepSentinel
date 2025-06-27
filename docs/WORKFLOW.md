@@ -547,3 +547,21 @@ We've built a comprehensive surveillance system with:
 
 ---
 
+## Implement Voice Command Controller
+
+- Created VoiceController class
+- Implemented speech recognition
+- Added command processing
+- Created wake word detection
+- Implemented voice authentication
+
+### Key Features
+
+**1. Wake Word Detection:** Listens for a specific word to activate  
+**2. Command Registration:** Allows adding custom commands with regex patterns  
+**3. Voice Authentication:** Verifies users using voiceprints  
+**4. Authentication Levels:** Some commands can bypass authentication  
+**5. Continuous Listening:** Runs in background thread  
+**6. Error Handling:** Robust against recognition errors  
+
+---
