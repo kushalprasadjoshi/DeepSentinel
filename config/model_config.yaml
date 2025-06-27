@@ -1,0 +1,73 @@
+# DeepSentinel Model Configuration
+# ---------------------------------
+# Defines model architecture, training parameters, and dataset configuration
+
+# Model Architecture
+model:
+  base: yolov8n.pt  # Pretrained base model
+  num_classes: 5    # Number of threat classes
+  input_size: 640   # Input resolution (pixels)
+  depth_multiple: 1.0  # Model depth multiplier
+  width_multiple: 1.0  # Layer channel multiplier
+
+# Training Hyperparameters
+training:
+  epochs: 100
+  batch_size: 16
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  momentum: 0.937
+  warmup_epochs: 3
+  warmup_momentum: 0.8
+  warmup_bias_lr: 0.1
+  box_loss_gain: 0.05
+  cls_loss_gain: 0.5
+  obj_loss_gain: 1.0
+  iou_threshold: 0.2
+  anchor_t: 4.0
+
+# Data Augmentation
+augmentation:
+  hsv_h: 0.015    # Hue augmentation
+  hsv_s: 0.7      # Saturation augmentation
+  hsv_v: 0.4      # Value augmentation
+  degrees: 0.0    # Rotation degrees
+  translate: 0.1  # Image translation
+  scale: 0.5      # Image scaling
+  shear: 0.0      # Image shear
+  perspective: 0.0
+  flipud: 0.0     # Flip up-down probability
+  fliplr: 0.5     # Flip left-right probability
+  mosaic: 1.0     # Mosaic augmentation probability
+  mixup: 0.0      # Mixup augmentation probability
+
+# Dataset Configuration
+dataset:
+  path: data/processed  # Path to dataset
+  train: images/train   # Training images directory
+  val: images/val       # Validation images directory
+  test: images/test     # Test images directory
+  names:                # Threat class names
+    0: weapon
+    1: fight
+    2: loitering
+    3: ppe_violation
+    4: intruder
+
+# Validation Metrics
+validation:
+  conf_threshold: 0.001  # Confidence threshold
+  iou_threshold: 0.6     # IOU threshold
+  max_det: 300           # Max detections per image
+  plots: True            # Generate validation plots
+
+# Transfer Learning
+transfer:
+  freeze: 10  # Number of layers to freeze
+  patience: 50  # Epochs to wait before stopping
+
+# Model Saving
+save:
+  format: onnx  # Export format (onnx, torchscript, etc.)
+  quantize: True  # Enable quantization
+  half_precision: True  # Use FP16 precision

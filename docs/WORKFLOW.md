@@ -773,3 +773,77 @@ graph TD
 ```
 
 ---
+
+## Add Model Configuration File
+
+- Defined YOLOv8 model architecture parameters
+- Added training hyperparameters with default values
+- Implemented data augmentation configuration
+- Created dataset path and class mapping
+- Added validation metrics configuration
+- Included transfer learning settings
+- Defined model export options
+
+### Key Configuration Sections:
+1. **Model Architecture**:
+   - Base model selection
+   - Class count
+   - Input resolution
+   - Scaling parameters
+
+2. **Training Hyperparameters**:
+   - Epochs and batch size
+   - Learning rate schedule
+   - Loss function weights
+   - Optimizer settings
+
+3. **Data Augmentation**:
+   - Color space transformations
+   - Geometric augmentations
+   - Advanced techniques like mosaic and mixup
+
+4. **Dataset Configuration**:
+   - Directory structure
+   - Threat class mapping
+   - Train/val/test splits
+
+5. **Validation Settings**:
+   - Detection thresholds
+   - Metric calculation
+   - Visualization options
+
+6. **Transfer Learning**:
+   - Layer freezing
+   - Early stopping patience
+
+7. **Model Export**:
+   - Output formats
+   - Quantization options
+   - Precision settings
+
+### Usage in Training:
+```python
+# In trainer.py
+with open('config/model_config.yaml') as f:
+    config = yaml.safe_load(f)
+    
+model = YOLO(config['model']['base'])
+model.train(
+    data=config['dataset']['path'],
+    epochs=config['training']['epochs'],
+    imgsz=config['model']['input_size'],
+    ...
+)
+```
+
+This configuration file provides a centralized way to manage all model-related settings, making it easy to:
+1. Experiment with different architectures
+2. Tune hyperparameters
+3. Configure dataset paths
+4. Control augmentation strategies
+5. Define validation metrics
+6. Set export options
+
+The file follows YOLOv8's configuration standards while adding security-specific parameters for threat detection.
+
+---
