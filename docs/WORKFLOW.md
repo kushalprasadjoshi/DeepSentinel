@@ -110,3 +110,23 @@ DeepSentinel/                  # Project root
 
 ---
 
+## Update Configuration
+
+### Add Alert Notification Configuration
+
+- Defined email alert settings
+- Added SMS alert configuration via Twilio
+- Included alert message templates
+- Set alert cooldown periods
+- Added test mode flag
+
+### Add Application Configuration File
+
+- Defined camera settings and resolutions
+- Added detection sensitivity thresholds
+- Configured system performance parameters
+- Included UI display preferences
+- Set default alert preferences
+
+---
+
