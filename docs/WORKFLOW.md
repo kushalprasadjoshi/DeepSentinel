@@ -475,3 +475,23 @@ We've now implemented the core system components. Next we'll move to the user in
 
 ---
 
+## Implement Main Application Window
+
+- Created MainApplication class
+- Implemented Tkinter-based GUI
+- Added video display panel
+- Created threat dashboard panel
+- Implemented control buttons
+- Added status bar
+
+### Key Features
+**1. Video Display:** Shows live camera feed with annotations  
+**2. Threat Dashboard:** Displays recent threats in a table  
+**3. Control Panel:** Buttons for system control  
+**4. Status Bar:** Shows real-time system metrics  
+**5. Auto-Update:** Continuously refreshes the UI  
+**6. Clean Shutdown:** Properly releases resources on close  
+
+This main window provides the primary interface for the surveillance system, integrating all the components we've built so far.
+
+---
