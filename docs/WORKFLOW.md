@@ -60,6 +60,7 @@ DeepSentinel/                  # Project root
 │   │   │   ├── email_alert.py  # Email notifications
 │   │   │   └── sms_alert.py    # SMS notifications
 │   │   ├── cloud/             # Cloud integration
+│   │   │   ├── __init__.py
 │   │   │   ├── aws_client.py  # AWS services
 │   │   │   └── model_updater.py # OTA updates
 │   │   └── __init__.py
@@ -1258,3 +1259,10 @@ sms_service.send_alert(threat_event, "Security alert!")
 
 ---
 
+## Initialize Cloud Services Subpackage
+
+- Created package-level imports for cloud services
+- Exposed AWSClient and ModelUpdater
+- Added documentation for cloud integrations
+
+---
