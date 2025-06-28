@@ -2,7 +2,7 @@ name: Model Training
 
 on:
   schedule:
-    - cron: '0 0 * * SUN'  # Run every Sunday at midnight
+    - cron: '0 0 * * SUN'  # Run every Sunday at midnight UTC
   workflow_dispatch:
     inputs:
       epochs:
@@ -23,41 +23,47 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       S3_BUCKET: ${{ secrets.S3_BUCKET }}
-      
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10.11"
 
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install boto3
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install boto3 awscli
 
-    - name: Download dataset
-      run: |
-        aws s3 sync s3://$S3_BUCKET/datasets/security data/processed/
+      - name: Download dataset from S3
+        run: |
+          mkdir -p data/processed/
+          aws s3 sync s3://$S3_BUCKET/datasets/security data/processed/
 
-    - name: Train model
-      run: |
-        python train.py \
-          --epochs ${{ github.event.inputs.epochs || 100 }} \
-          --batch ${{ github.event.inputs.batch_size || 16 }} \
-          --output models/custom
+      - name: Train model
+        run: |
+          EPOCHS="${{ github.event.inputs.epochs }}"
+          BATCH_SIZE="${{ github.event.inputs.batch_size }}"
+          if [ -z "$EPOCHS" ]; then EPOCHS=100; fi
+          if [ -z "$BATCH_SIZE" ]; then BATCH_SIZE=16; fi
+          mkdir -p models/custom
+          python train.py \
+            --epochs "$EPOCHS" \
+            --batch "$BATCH_SIZE" \
+            --output models/custom
 
-    - name: Upload trained model
-      run: |
-        aws s3 sync models/custom/ s3://$S3_BUCKET/models/latest/
-        aws s3 cp models/custom/model.pt s3://$S3_BUCKET/models/v$(date +%Y%m%d)/model.pt
+      - name: Upload trained model to S3
+        run: |
+          aws s3 sync models/custom/ s3://$S3_BUCKET/models/latest/
+          aws s3 cp models/custom/model.pt s3://$S3_BUCKET/models/v$(date +%Y%m%d)/model.pt
 
-    - name: Save model artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: trained-model
-        path: models/custom
-        retention-days: 1
+      - name: Save model as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: trained-model
+          path: models/custom/
+          retention-days:
