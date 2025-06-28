@@ -5,8 +5,8 @@ email:
   enabled: true
   server: smtp.gmail.com
   port: 587
-  username: your_email@gmail.com
-  password: your_app_password  # Use app-specific password
+  username: your
+  password: your  # Use app-specific password
   sender: "DeepSentinel Alert <alerts@deepsentinel.com>"
   recipients:
     - "security@yourcompany.com"
